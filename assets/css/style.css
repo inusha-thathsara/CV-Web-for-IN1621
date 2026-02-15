@@ -103,6 +103,8 @@ h6 {
     background: var(--text-accent);
     color: var(--bg-body);
     border-color: var(--text-accent);
+    box-shadow: 0 0 12px rgba(88, 166, 255, 0.4);
+    transform: translateY(-1px) scale(1.05);
 }
 
 /* Main Content */
@@ -110,25 +112,83 @@ h6 {
     background-color: var(--bg-resume);
 }
 
+/* ── Name Title Shimmer ── */
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
+
 .name-title {
-    background: linear-gradient(90deg, #fff, #8b949e);
+    background: linear-gradient(90deg,
+            #fff 0%,
+            #8b949e 40%,
+            #58a6ff 50%,
+            #8b949e 60%,
+            #fff 100%);
+    background-size: 200% auto;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: shimmer 6s ease-in-out infinite;
+}
+
+/* ── Typing cursor ── */
+.typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: var(--text-accent);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
 }
 
 .section-title {
     color: var(--text-primary);
     font-size: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 2px solid transparent;
     padding-bottom: 10px;
     margin-bottom: 25px;
     display: flex;
     align-items: center;
+    position: relative;
+}
+
+/* Animated underline for section titles */
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--text-accent), transparent);
+    transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.section-title.visible::after {
+    width: 100%;
 }
 
 .section-title i {
     color: var(--text-accent);
     font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.section-title:hover i {
+    transform: scale(1.2) rotate(-5deg);
 }
 
 .text-accent {
@@ -143,20 +203,37 @@ h6 {
 .experience-item {
     position: relative;
     padding-left: 20px;
+    transition: transform 0.3s ease;
 }
 
-/* Bullet point for experience */
+.experience-item:hover {
+    transform: translateX(4px);
+}
+
+/* Bullet point for experience — with pulse */
+@keyframes pulse-dot {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(88, 166, 255, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 0 6px rgba(88, 166, 255, 0);
+    }
+}
+
 .experience-item::before {
     content: '';
     position: absolute;
     left: -5px;
-    /* Half of border width (1px) + circle radius offset */
     top: 5px;
     width: 9px;
     height: 9px;
-    background: var(--bg-body);
+    background: var(--text-accent);
     border: 2px solid var(--text-accent);
     border-radius: 50%;
+    animation: pulse-dot 2.5s ease-in-out infinite;
 }
 
 /* Projects */
@@ -165,16 +242,90 @@ h6 {
     border: 1px solid var(--border-color);
     padding: 15px;
     border-radius: 8px;
-    transition: transform 0.2s, border-color 0.2s;
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        border-color 0.3s ease,
+        box-shadow 0.35s ease,
+        background 0.3s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
 }
 
 .project-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-6px);
     border-color: var(--text-accent);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(88, 166, 255, 0.04);
+    box-shadow: 0 8px 30px rgba(88, 166, 255, 0.12),
+        0 0 0 1px rgba(88, 166, 255, 0.2);
 }
 
-/* Responsive */
+/* ── Contact list hover effects ── */
+.contact-list li {
+    transition: transform 0.25s ease;
+}
+
+.contact-list li:hover {
+    transform: translateX(6px);
+}
+
+.contact-list li i {
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.contact-list li:hover i {
+    color: var(--text-accent);
+    transform: scale(1.15);
+}
+
+/* ── Badge hover ── */
+.badge.bg-dark-subtle {
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    cursor: default;
+}
+
+.badge.bg-dark-subtle:hover {
+    transform: translateY(-2px);
+    background-color: rgba(88, 166, 255, 0.15) !important;
+    color: var(--text-accent) !important;
+}
+
+/* ── Volunteering list hover ── */
+section:last-child li {
+    transition: transform 0.25s ease, padding-left 0.25s ease;
+    padding-left: 0;
+}
+
+section:last-child li:hover {
+    transform: translateX(4px);
+}
+
+/* ══════════════════════════════════════
+   SCROLL-REVEAL ANIMATION SYSTEM
+   ══════════════════════════════════════ */
+
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Sidebar items slide in from the left */
+.sidebar .animate-on-scroll {
+    transform: translateX(-20px);
+}
+
+.sidebar .animate-on-scroll.visible {
+    transform: translateX(0);
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════ */
 @media (max-width: 992px) {
     .sidebar {
         border-right: none;
@@ -186,10 +337,26 @@ h6 {
         margin: 0 !important;
         box-shadow: none;
     }
+
+    .sidebar .animate-on-scroll {
+        transform: translateY(24px);
+    }
 }
 
-/* Print Styles - for saving as PDF */
+/* ══════════════════════════════════════
+   PRINT STYLES — no animations
+   ══════════════════════════════════════ */
 @media print {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .animate-on-scroll {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
     body {
         background: #fff;
         color: #000;
@@ -214,6 +381,7 @@ h6 {
         background: none;
         -webkit-text-fill-color: #000;
         color: #000;
+        animation: none;
     }
 
     .text-white,
@@ -234,5 +402,9 @@ h6 {
     a {
         text-decoration: none;
         color: #000;
+    }
+
+    .typing-cursor {
+        display: none !important;
     }
 }
