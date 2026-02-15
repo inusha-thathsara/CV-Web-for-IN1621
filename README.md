@@ -11,8 +11,12 @@ This project is a personal portfolio/CV website designed to showcase skills, exp
 ## ✨ Key Features
 
 *   **Premium Design**: Features a dark-themed, glassmorphism-inspired UI with "GitHub Dark" color palette.
+*   **Interactive Enhancements**:
+    *   **Typing Effect**: Dynamic subtitle animation on load.
+    *   **3D Tilt Cards**: Project cards respond to mouse movement with a subtle 3D perspective.
+    *   **Scroll Reveals**: Content sections fade and slide in as you scroll.
+    *   **Micro-Interactions**: Glow effects, hover lifts, and animated underlines for a polished feel.
 *   **Digital CV Layout**: A split-column layout (Sidebar + Main Content) simulating a professional digital document.
-*   **Aesthetic Animations**: Subtle entrance animations (fade-in, slide-up) powered by Intersection Observer API.
 *   **Responsive**: Fully responsive design using **Bootstrap 5** grid, adapting seamlessly from desktop to mobile.
 *   **Interactive Skills**: Tech stack tags link directly to their official documentation.
 
